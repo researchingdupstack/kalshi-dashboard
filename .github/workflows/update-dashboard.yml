@@ -4,24 +4,13 @@ on:
   schedule:
     - cron: '0 * * * *'  # Every hour
   workflow_dispatch:  # Allow manual trigger
-  push:
-    branches: [main]
 
 permissions:
   contents: write
-  pages: write
-  id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
 
 jobs:
-  build-and-deploy:
+  update-data:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -34,22 +23,10 @@ jobs:
       - name: Fetch markets and generate data
         run: python fetch_markets.py
 
-      - name: Commit updated data
+      - name: Commit and push updated data
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data.json
           git diff --cached --quiet || git commit -m "Update market data $(date -u '+%Y-%m-%d %H:%M UTC')"
           git push
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: '.'
-
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
