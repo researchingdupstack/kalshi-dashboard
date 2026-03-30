@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kalshi Ticker FAQ</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --border: #30363d;
+    --text: #e6edf3;
+    --text-secondary: #8b949e;
+    --accent: #58a6ff;
+    --green: #3fb950;
+    --yellow: #d29922;
+    --red: #f85149;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+  }
+  .container { max-width: 860px; margin: 0 auto; padding: 20px; }
+  header {
+    text-align: center;
+    padding: 40px 20px 30px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 32px;
+  }
+  header h1 { font-size: 2rem; font-weight: 600; margin-bottom: 8px; }
+  header h1 span { color: var(--accent); }
+  header p { color: var(--text-secondary); font-size: 0.95rem; }
+  .back-link {
+    display: inline-block;
+    margin-bottom: 20px;
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+  .back-link:hover { text-decoration: underline; }
+  h2 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin: 36px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    color: var(--accent);
+  }
+  h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 24px 0 10px;
+  }
+  p { margin: 10px 0; }
+  code {
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 0.88rem;
+    color: var(--green);
+  }
+  .ticker-diagram {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin: 16px 0;
+    font-family: 'SFMono-Regular', Consolas, monospace;
+    font-size: 0.95rem;
+    overflow-x: auto;
+  }
+  .ticker-diagram .segment { display: inline; }
+  .seg-series { color: var(--accent); font-weight: 700; }
+  .seg-date { color: var(--green); }
+  .seg-variant { color: var(--yellow); }
+  .seg-outcome { color: var(--red); }
+  .sep { color: var(--text-secondary); }
+  .label { color: var(--text-secondary); font-size: 0.75rem; display: block; margin-top: 4px; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+  }
+  th {
+    text-align: left;
+    padding: 10px 14px;
+    background: var(--surface);
+    border-bottom: 2px solid var(--border);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-secondary);
+  }
+  td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.9rem;
+    vertical-align: top;
+  }
+  .example-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 12px 0;
+  }
+  .example-box .title { color: var(--accent); font-weight: 600; font-size: 0.85rem; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .example-row {
+    display: flex;
+    gap: 12px;
+    align-items: baseline;
+    margin: 6px 0;
+    flex-wrap: wrap;
+  }
+  .example-ticker { font-family: monospace; color: var(--green); font-size: 0.9rem; min-width: 320px; }
+  .example-desc { color: var(--text-secondary); font-size: 0.85rem; }
+  ul { margin: 10px 0 10px 24px; }
+  li { margin: 6px 0; }
+  footer {
+    text-align: center;
+    padding: 30px 20px;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    border-top: 1px solid var(--border);
+    margin-top: 40px;
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+  @media (max-width: 768px) {
+    .container { padding: 12px; }
+    .example-ticker { min-width: 0; }
+    header h1 { font-size: 1.4rem; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<a href="index.html" class="back-link">← Back to Dashboard</a>
+
+<header>
+  <h1>🏷️ <span>Kalshi</span> Ticker FAQ</h1>
+  <p>How to read and understand Kalshi instrument tickers</p>
+</header>
+
+<h2>What is a ticker?</h2>
+<p>Every market on Kalshi has a unique <strong>ticker</strong> — a structured string that encodes what the market is about, when it expires, and which outcome it represents. Think of it like a stock ticker, but for prediction markets.</p>
+
+<h2>Ticker anatomy</h2>
+<p>A Kalshi ticker is built from up to four segments, separated by hyphens:</p>
+
+<div class="ticker-diagram">
+  <span class="seg-series">KX[SERIES]</span><span class="sep">-</span><span class="seg-date">[DATE/PERIOD]</span><span class="sep">-</span><span class="seg-variant">[VARIANT]</span><span class="sep">-</span><span class="seg-outcome">[OUTCOME]</span>
+  <span class="label">
+    &nbsp;&nbsp;&nbsp;<span class="seg-series">Series</span>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <span class="seg-date">Time</span>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <span class="seg-variant">Strike/Variant</span>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <span class="seg-outcome">Outcome</span>
+  </span>
+</div>
+
+<p>Not all segments are always present. Simple markets may only have two or three parts.</p>
+
+<h3>1. Series prefix — <code class="seg-series">KX[SERIES]</code></h3>
+<p>All Kalshi tickers start with <code>KX</code> followed by a topic identifier. This tells you what category or subject the market belongs to.</p>
+
+<table>
+  <thead><tr><th>Prefix</th><th>Meaning</th><th>Category</th></tr></thead>
+  <tbody>
+    <tr><td><code>KXBTC</code></td><td>Bitcoin price</td><td>Crypto</td></tr>
+    <tr><td><code>KXETH</code></td><td>Ethereum price</td><td>Crypto</td></tr>
+    <tr><td><code>KXINX</code></td><td>S&P 500 index</td><td>Financials</td></tr>
+    <tr><td><code>KXWTI</code></td><td>WTI oil price</td><td>Financials</td></tr>
+    <tr><td><code>KXFEDDECISION</code></td><td>Fed rate decision</td><td>Economics</td></tr>
+    <tr><td><code>KXNBAGAME</code></td><td>NBA game outcome</td><td>Sports</td></tr>
+    <tr><td><code>KXMARMAD</code></td><td>March Madness</td><td>Sports</td></tr>
+    <tr><td><code>KXHIGH</code></td><td>Daily high temperature</td><td>Climate & Weather</td></tr>
+    <tr><td><code>KXTRUMPSAY</code></td><td>Trump word mentions</td><td>Mentions</td></tr>
+    <tr><td><code>KXPRESNOMD</code></td><td>Presidential nominee</td><td>Elections</td></tr>
+    <tr><td><code>KXRT</code></td><td>Rotten Tomatoes score</td><td>Entertainment</td></tr>
+    <tr><td><code>KXSPACEX</code></td><td>SpaceX launches</td><td>Companies</td></tr>
+    <tr><td><code>KXMEASLES</code></td><td>Measles cases</td><td>Health</td></tr>
+  </tbody>
+</table>
+
+<h3>2. Date/period — <code class="seg-date">[DATE]</code></h3>
+<p>Encodes when the market applies or expires. Common formats:</p>
+
+<table>
+  <thead><tr><th>Format</th><th>Meaning</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr><td><code>26MAR30</code></td><td>Specific date: Mar 30, 2026</td><td><code>KXBTCD-<b>26MAR3009</b></code></td></tr>
+    <tr><td><code>26APR</code></td><td>Month: April 2026</td><td><code>KXFEDDECISION-<b>26APR</b></code></td></tr>
+    <tr><td><code>26</code></td><td>Year: 2026</td><td><code>KXMARMAD-<b>26</b></code></td></tr>
+    <tr><td><code>26-Q1</code></td><td>Quarter: Q1 2026</td><td><code>KXTESLA-<b>26-Q1</b></code></td></tr>
+    <tr><td><code>28JUL01</code></td><td>Deadline date: Jul 1, 2028</td><td><code>KXCITRINI-<b>28JUL01</b></code></td></tr>
+    <tr><td><code>27</code></td><td>Year: 2027</td><td><code>KXALIENS-<b>27</b></code></td></tr>
+  </tbody>
+</table>
+<p>For daily markets (weather, crypto prices), the date often includes an hour: <code>26MAR3009</code> = March 30, 2026 at 9:00.</p>
+
+<h3>3. Strike/variant — <code class="seg-variant">[VARIANT]</code></h3>
+<p>Specifies the threshold, strike price, or specific sub-question. Prefixes indicate the type:</p>
+
+<table>
+  <thead><tr><th>Prefix</th><th>Meaning</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr><td><code>T</code></td><td>Threshold / "above this value"</td><td><code>T67899.99</code> → BTC above $67,899.99</td></tr>
+    <tr><td><code>B</code></td><td>Between / bracket</td><td><code>B37500</code> → BTC between bracket at $37,500</td></tr>
+    <tr><td><code>G</code></td><td>Greater than / at least</td><td><code>G45</code> → shutdown ≥ 45 days</td></tr>
+    <tr><td><code>C</code></td><td>Cut (Fed rate cut)</td><td><code>C25</code> → 25bps rate cut</td></tr>
+    <tr><td><code>H</code></td><td>Hold (Fed rate hold)</td><td><code>H0</code> → rates held</td></tr>
+    <tr><td>(number)</td><td>Numeric threshold</td><td><code>6000</code> → 6,000 measles cases</td></tr>
+    <tr><td>(text)</td><td>Named outcome</td><td><code>AUTI</code> → Trump says "Autism"</td></tr>
+  </tbody>
+</table>
+
+<h3>4. Outcome side — <code class="seg-outcome">[OUTCOME]</code></h3>
+<p>For multi-outcome events (e.g., sports), the last segment identifies which side or team:</p>
+
+<div class="example-box">
+  <div class="title">Sports game outcomes</div>
+  <div class="example-row">
+    <span class="example-ticker">KXNBAGAME-26MAR30BOSATL-<b>BOS</b></span>
+    <span class="example-desc">→ Boston wins (Celtics at Hawks)</span>
+  </div>
+  <div class="example-row">
+    <span class="example-ticker">KXNBAGAME-26MAR30BOSATL-<b>ATL</b></span>
+    <span class="example-desc">→ Atlanta wins (same game, other side)</span>
+  </div>
+</div>
+
+<div class="example-box">
+  <div class="title">Championship winners</div>
+  <div class="example-row">
+    <span class="example-ticker">KXMARMAD-26-<b>CONN</b></span>
+    <span class="example-desc">→ UConn wins March Madness 2026</span>
+  </div>
+  <div class="example-row">
+    <span class="example-ticker">KXMARMAD-26-<b>MICH</b></span>
+    <span class="example-desc">→ Michigan wins March Madness 2026</span>
+  </div>
+</div>
+
+<div class="example-box">
+  <div class="title">Elections / named candidates</div>
+  <div class="example-row">
+    <span class="example-ticker">KXPRESNOMD-28-<b>JBP</b></span>
+    <span class="example-desc">→ J.B. Pritzker as Dem nominee 2028</span>
+  </div>
+</div>
+
+<h2>Full examples decoded</h2>
+
+<table>
+  <thead><tr><th>Ticker</th><th>Breakdown</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><code>KXBTCD-26MAR3009-T67899.99</code></td>
+      <td>
+        <code class="seg-series">KXBTCD</code> Bitcoin daily ·
+        <code class="seg-date">26MAR3009</code> Mar 30, 2026 at 9:00 ·
+        <code class="seg-variant">T67899.99</code> above $67,899.99
+      </td>
+    </tr>
+    <tr>
+      <td><code>KXFEDDECISION-26APR-C25</code></td>
+      <td>
+        <code class="seg-series">KXFEDDECISION</code> Fed rate decision ·
+        <code class="seg-date">26APR</code> April 2026 meeting ·
+        <code class="seg-variant">C25</code> cut by 25bps
+      </td>
+    </tr>
+    <tr>
+      <td><code>KXHIGHNY-26MAR30-T69</code></td>
+      <td>
+        <code class="seg-series">KXHIGHNY</code> NYC daily high temp ·
+        <code class="seg-date">26MAR30</code> Mar 30, 2026 ·
+        <code class="seg-variant">T69</code> above 69°F
+      </td>
+    </tr>
+    <tr>
+      <td><code>KXTRUMPSAY-26MAR30-AUTI</code></td>
+      <td>
+        <code class="seg-series">KXTRUMPSAY</code> Trump word mention ·
+        <code class="seg-date">26MAR30</code> by Mar 30, 2026 ·
+        <code class="seg-variant">AUTI</code> says "Autism"
+      </td>
+    </tr>
+    <tr>
+      <td><code>KXIPLGAME-26MAR30CSKRR-CSK</code></td>
+      <td>
+        <code class="seg-series">KXIPLGAME</code> IPL cricket game ·
+        <code class="seg-date">26MAR30</code> Mar 30, 2026 ·
+        <code class="seg-variant">CSKRR</code> CSK vs RR matchup ·
+        <code class="seg-outcome">CSK</code> Chennai Super Kings win
+      </td>
+    </tr>
+    <tr>
+      <td><code>KXTESLA-26-Q1-340000</code></td>
+      <td>
+        <code class="seg-series">KXTESLA</code> Tesla deliveries ·
+        <code class="seg-date">26-Q1</code> Q1 2026 ·
+        <code class="seg-variant">340000</code> ≥ 340,000 vehicles
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>Frequently asked questions</h2>
+
+<h3>What does the KX prefix mean?</h3>
+<p><code>KX</code> stands for <strong>Kalshi Exchange</strong>. Every instrument on the platform starts with this prefix.</p>
+
+<h3>Why do some tickers have more segments than others?</h3>
+<p>Simple yes/no markets (e.g., "Will aliens be confirmed by 2027?") only need a series and time: <code>KXALIENS-27</code>. Markets with multiple outcomes, strike prices, or variants need additional segments.</p>
+
+<h3>What's the difference between D, W, M in crypto tickers?</h3>
+<p><code>KXBTCD</code> = daily, <code>KXBTCW</code> = weekly, <code>KXBTCM</code> = monthly Bitcoin markets. Same pattern applies to ETH and other crypto tickers.</p>
+
+<h3>How do sports game tickers encode the matchup?</h3>
+<p>The format is <code>KX[LEAGUE]GAME-[DATE][AWAY][HOME]-[SIDE]</code>. For example, <code>KXNBAGAME-26MAR30BOSATL-BOS</code> is an NBA game on Mar 30 with Boston (away) at Atlanta (home), and this contract is for Boston winning.</p>
+
+<h3>What are the T, B, G, C, H prefixes on variants?</h3>
+<ul>
+  <li><strong>T (Threshold)</strong>: Price/value above this level</li>
+  <li><strong>B (Bracket/Between)</strong>: Price in a range starting at this level</li>
+  <li><strong>G (Greater/at least)</strong>: At least this many (days, count, etc.)</li>
+  <li><strong>C (Cut)</strong>: Fed rate cut by this many basis points</li>
+  <li><strong>H (Hold)</strong>: Fed holds rates unchanged</li>
+</ul>
+
+<h3>Can I search by ticker on the dashboard?</h3>
+<p>Yes! The search box on the <a href="index.html">main dashboard</a> searches across market titles, event names, categories, <strong>and tickers</strong>. Try searching for <code>KXBTC</code> to find all Bitcoin markets, or <code>KXFED</code> for Fed-related markets.</p>
+
+<h3>Are tickers stable?</h3>
+<p>Yes. Once a market is created, its ticker never changes. You can use tickers to track specific markets over time or reference them in the <a href="https://docs.kalshi.com" target="_blank">Kalshi API</a>.</p>
+
+<footer>
+  <p><a href="index.html">← Back to Dashboard</a> · 
+     <a href="https://kalshi.com" target="_blank">Kalshi</a> · 
+     <a href="https://docs.kalshi.com" target="_blank">API Docs</a> · 
+     <a href="https://github.com/researchingdupstack/kalshi-dashboard" target="_blank">Source</a></p>
+  <p style="margin-top: 4px;">Ticker structures are derived from observed patterns and may evolve as Kalshi adds new market types.</p>
+</footer>
+
+</div>
+</body>
+</html>

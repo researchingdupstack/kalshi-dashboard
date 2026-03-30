@@ -123,6 +123,7 @@
   tr:hover { background: rgba(88,166,255,0.04); }
   .market-title { font-weight: 500; max-width: 400px; }
   .market-event { color: var(--text-secondary); font-size: 0.8rem; margin-top: 2px; }
+  .ticker { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; font-size: 0.78rem; color: var(--text-secondary); word-break: break-all; max-width: 220px; }
   .category-badge {
     display: inline-block;
     padding: 2px 10px;
@@ -228,6 +229,7 @@
       <option value="price_high">Sort: Price ↓</option>
       <option value="price_low">Sort: Price ↑</option>
       <option value="title">Sort: Title A→Z</option>
+      <option value="ticker">Sort: Ticker A→Z</option>
       <option value="close_time">Sort: Closing Soon</option>
     </select>
   </div>
@@ -246,6 +248,7 @@
     <thead>
       <tr>
         <th>Market</th>
+        <th>Ticker</th>
         <th>Category</th>
         <th>Yes Price</th>
         <th>24h Volume</th>
@@ -262,6 +265,7 @@
 <footer>
   <p>Data from <a href="https://kalshi.com" target="_blank">Kalshi</a> public API ·
      Auto-updated hourly via GitHub Actions ·
+     <a href="faq.html">Ticker FAQ</a> ·
      <a href="https://github.com/researchingdupstack/kalshi-dashboard" target="_blank">View Source</a></p>
   <p style="margin-top: 4px;">Not financial advice. Kalshi is a CFTC-regulated exchange.</p>
 </footer>
@@ -329,6 +333,7 @@ function applyFilters() {
       case 'price_high': return b.p - a.p;
       case 'price_low': return a.p - b.p;
       case 'title': return a.n.localeCompare(b.n);
+      case 'ticker': return a.t.localeCompare(b.t);
       case 'close_time': return a.cs.localeCompare(b.cs);
       default: return 0;
     }
@@ -360,6 +365,7 @@ function render() {
         <div class="market-title">${esc(m.n)}</div>
         ${m.e ? '<div class="market-event">' + esc(m.e) + '</div>' : ''}
       </td>
+      <td class="ticker">${esc(m.t)}</td>
       <td><span class="category-badge">${esc(m.c)}</span></td>
       <td class="price ${pc}">${m.p.toFixed(1)}¢</td>
       <td class="${vc}">${m.v > 0 ? '$' + fmtNum(m.v) : '—'}</td>
