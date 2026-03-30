@@ -8,761 +8,447 @@
   :root {
     --bg: #0d1117;
     --surface: #161b22;
-    --surface2: #21262d;
     --border: #30363d;
     --text: #e6edf3;
-    --text2: #8b949e;
+    --text-secondary: #8b949e;
     --accent: #58a6ff;
     --green: #3fb950;
     --red: #f85149;
-    --orange: #d29922;
-    --purple: #bc8cff;
+    --yellow: #d29922;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
     background: var(--bg);
     color: var(--text);
-    min-height: 100vh;
+    line-height: 1.5;
   }
-
-  /* Header */
-  .header {
-    background: var(--surface);
+  .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+  header {
+    text-align: center;
+    padding: 40px 20px 30px;
     border-bottom: 1px solid var(--border);
-    padding: 16px 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: sticky;
-    top: 0;
-    z-index: 100;
+    margin-bottom: 24px;
   }
-  .header h1 {
-    font-size: 20px;
-    font-weight: 600;
+  header h1 { font-size: 2rem; font-weight: 600; margin-bottom: 8px; }
+  header h1 span { color: var(--accent); }
+  header p { color: var(--text-secondary); font-size: 0.9rem; }
+  .stats {
     display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .header h1 span { color: var(--accent); }
-  .header-right {
-    display: flex;
-    align-items: center;
     gap: 16px;
-    font-size: 13px;
-    color: var(--text2);
+    justify-content: center;
+    margin: 20px 0;
+    flex-wrap: wrap;
   }
-  .live-dot {
-    width: 8px; height: 8px;
-    background: var(--green);
-    border-radius: 50%;
-    display: inline-block;
-    animation: pulse 2s infinite;
-  }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
-  }
-  .refresh-btn {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    color: var(--text);
-    padding: 6px 14px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 13px;
-    transition: background 0.2s;
-  }
-  .refresh-btn:hover { background: var(--border); }
-
-  /* Progress bar */
-  .progress-bar {
-    height: 3px;
-    background: var(--surface2);
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 200;
-    display: none;
-  }
-  .progress-bar.active { display: block; }
-  .progress-fill {
-    height: 100%;
-    background: var(--accent);
-    width: 0%;
-    transition: width 0.3s ease;
-  }
-
-  /* Stats row */
-  .stats-row {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 12px;
-    padding: 20px 24px;
-    max-width: 1400px;
-    margin: 0 auto;
-  }
-  .stat-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 16px;
-  }
-  .stat-card .label { font-size: 12px; color: var(--text2); text-transform: uppercase; letter-spacing: 0.5px; }
-  .stat-card .value { font-size: 28px; font-weight: 700; margin-top: 4px; }
-  .stat-card .sub { font-size: 12px; color: var(--text2); margin-top: 2px; }
-
-  /* Main grid */
-  .main {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 24px 40px;
-    display: grid;
-    grid-template-columns: 280px 1fr;
-    gap: 16px;
-  }
-
-  /* Sidebar: category filter */
-  .sidebar {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 16px;
-    position: sticky;
-    top: 70px;
-    max-height: calc(100vh - 90px);
-    overflow-y: auto;
-  }
-  .sidebar h3 { font-size: 13px; color: var(--text2); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
-  .cat-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 10px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background 0.15s;
-    user-select: none;
-  }
-  .cat-item:hover { background: var(--surface2); }
-  .cat-item.active { background: var(--accent); color: #000; font-weight: 600; }
-  .cat-item.active .cat-count { color: rgba(0,0,0,0.6); }
-  .cat-count { font-size: 12px; color: var(--text2); font-weight: 500; }
-
-  /* Search */
-  .search-bar {
-    margin-bottom: 16px;
-  }
-  .search-bar input {
-    width: 100%;
+  .stat {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 8px;
-    padding: 10px 14px;
+    padding: 16px 24px;
+    text-align: center;
+    min-width: 160px;
+  }
+  .stat-value { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+  .stat-label { font-size: 0.8rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; }
+  .controls {
+    display: flex;
+    gap: 12px;
+    margin: 24px 0;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .search-box {
+    flex: 1;
+    min-width: 250px;
+    padding: 10px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
     color: var(--text);
-    font-size: 14px;
+    font-size: 0.95rem;
     outline: none;
     transition: border-color 0.2s;
   }
-  .search-bar input:focus { border-color: var(--accent); }
-  .search-bar input::placeholder { color: var(--text2); }
-
-  /* Events list */
-  .events-panel {
-    min-width: 0;
-  }
-  .events-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 12px;
-  }
-  .events-header h2 { font-size: 16px; font-weight: 600; }
-  .sort-select {
+  .search-box:focus { border-color: var(--accent); }
+  .search-box::placeholder { color: var(--text-secondary); }
+  .filter-btn {
+    padding: 8px 16px;
     background: var(--surface);
     border: 1px solid var(--border);
-    color: var(--text);
-    padding: 6px 10px;
     border-radius: 6px;
-    font-size: 13px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.2s;
+    white-space: nowrap;
   }
-
-  .event-card {
+  .filter-btn:hover { border-color: var(--accent); color: var(--text); }
+  .filter-btn.active { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 600; }
+  .sort-select {
+    padding: 10px 16px;
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 16px;
-    margin-bottom: 10px;
+    border-radius: 8px;
+    color: var(--text);
+    font-size: 0.85rem;
     cursor: pointer;
-    transition: border-color 0.2s, transform 0.1s;
+    outline: none;
   }
-  .event-card:hover { border-color: var(--accent); transform: translateY(-1px); }
-  .event-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 12px;
+  .market-count {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    padding: 8px 0;
   }
-  .event-title {
-    font-size: 15px;
-    font-weight: 600;
-    line-height: 1.3;
-    flex: 1;
-  }
-  .event-category {
-    font-size: 11px;
-    padding: 3px 8px;
-    border-radius: 12px;
+  table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+  th {
+    text-align: left;
+    padding: 12px 16px;
+    background: var(--surface);
+    border-bottom: 2px solid var(--border);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-secondary);
     white-space: nowrap;
-    font-weight: 600;
+    position: sticky;
+    top: 0;
+    z-index: 10;
   }
-  .event-meta {
-    display: flex;
-    gap: 16px;
-    margin-top: 10px;
-    font-size: 12px;
-    color: var(--text2);
-    flex-wrap: wrap;
+  td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.9rem;
+    vertical-align: top;
   }
-  .event-meta span { display: flex; align-items: center; gap: 4px; }
-  .event-ticker {
-    font-family: 'SFMono-Regular', Consolas, monospace;
-    font-size: 11px;
-    color: var(--purple);
-    background: rgba(188,140,255,0.1);
-    padding: 2px 6px;
-    border-radius: 4px;
+  tr:hover { background: rgba(88,166,255,0.04); }
+  .market-title { font-weight: 500; max-width: 400px; }
+  .market-event { color: var(--text-secondary); font-size: 0.8rem; margin-top: 2px; }
+  .category-badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    background: rgba(88,166,255,0.15);
+    color: var(--accent);
+    white-space: nowrap;
   }
-
-  /* Markets sub-list */
-  .markets-list {
-    margin-top: 12px;
-    border-top: 1px solid var(--border);
-    padding-top: 12px;
-    display: none;
-  }
-  .event-card.expanded .markets-list { display: block; }
-  .market-row {
-    display: grid;
-    grid-template-columns: 1fr auto auto auto;
-    gap: 12px;
-    align-items: center;
-    padding: 6px 0;
-    font-size: 13px;
-    border-bottom: 1px solid rgba(48,54,61,0.5);
-  }
-  .market-row:last-child { border-bottom: none; }
-  .market-title { color: var(--text); }
-  .market-yes { color: var(--green); font-weight: 600; font-family: monospace; }
-  .market-no { color: var(--red); font-weight: 600; font-family: monospace; }
-  .market-vol { color: var(--text2); font-family: monospace; font-size: 12px; }
-
-  /* Category colors */
-  .cat-sports { background: rgba(56,139,253,0.15); color: #58a6ff; }
-  .cat-elections { background: rgba(188,140,255,0.15); color: #bc8cff; }
-  .cat-politics { background: rgba(210,153,34,0.15); color: #d29922; }
-  .cat-economics { background: rgba(63,185,80,0.15); color: #3fb950; }
-  .cat-entertainment { background: rgba(248,81,73,0.15); color: #f85149; }
-  .cat-crypto { background: rgba(255,166,87,0.15); color: #ffa657; }
-  .cat-climate { background: rgba(57,211,183,0.15); color: #39d3b7; }
-  .cat-science { background: rgba(121,192,255,0.15); color: #79c0ff; }
-  .cat-companies { background: rgba(219,171,255,0.15); color: #dbabff; }
-  .cat-financials { background: rgba(63,185,80,0.15); color: #56d364; }
-  .cat-mentions { background: rgba(145,152,161,0.15); color: #9198a1; }
-  .cat-world { background: rgba(255,123,114,0.15); color: #ff7b72; }
-  .cat-social { background: rgba(238,159,237,0.15); color: #ee9fed; }
-  .cat-health { background: rgba(63,185,80,0.15); color: #3fb950; }
-  .cat-transportation { background: rgba(145,152,161,0.15); color: #9198a1; }
-
-  /* Pagination */
+  .price { font-weight: 600; font-variant-numeric: tabular-nums; }
+  .price-high { color: var(--green); }
+  .price-mid { color: var(--yellow); }
+  .price-low { color: var(--text-secondary); }
+  .volume { font-variant-numeric: tabular-nums; color: var(--text-secondary); }
+  .volume-high { color: var(--text); font-weight: 500; }
   .pagination {
     display: flex;
     justify-content: center;
+    align-items: center;
     gap: 8px;
-    margin-top: 20px;
+    margin: 24px 0;
+    flex-wrap: wrap;
   }
   .page-btn {
+    padding: 8px 14px;
     background: var(--surface);
     border: 1px solid var(--border);
-    color: var(--text);
-    padding: 8px 16px;
     border-radius: 6px;
+    color: var(--text);
     cursor: pointer;
-    font-size: 13px;
+    font-size: 0.85rem;
+    transition: all 0.2s;
   }
-  .page-btn:hover { background: var(--surface2); }
-  .page-btn:disabled { opacity: 0.4; cursor: default; }
+  .page-btn:hover { border-color: var(--accent); }
+  .page-btn:disabled { opacity: 0.3; cursor: default; }
   .page-btn.active { background: var(--accent); color: #000; border-color: var(--accent); }
-
-  /* Loading */
+  .page-info { color: var(--text-secondary); font-size: 0.85rem; margin: 0 8px; }
   .loading {
     text-align: center;
     padding: 60px 20px;
-    color: var(--text2);
+    color: var(--text-secondary);
+    font-size: 1.1rem;
   }
-  .spinner {
-    width: 32px; height: 32px;
+  .loading-spinner {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
     border: 3px solid var(--border);
     border-top-color: var(--accent);
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
-    margin: 0 auto 16px;
+    margin-right: 10px;
+    vertical-align: middle;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
-
-  /* Chart */
-  .chart-section {
-    padding: 0 24px 20px;
-    max-width: 1400px;
-    margin: 0 auto;
+  footer {
+    text-align: center;
+    padding: 30px 20px;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    border-top: 1px solid var(--border);
+    margin-top: 40px;
   }
-  .chart-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 20px;
-  }
-  .chart-card h3 { font-size: 14px; color: var(--text2); margin-bottom: 16px; }
-  .bar-chart { display: flex; flex-direction: column; gap: 6px; }
-  .bar-row { display: flex; align-items: center; gap: 10px; }
-  .bar-label { width: 160px; font-size: 13px; text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .bar-track { flex: 1; height: 24px; background: var(--surface2); border-radius: 4px; overflow: hidden; position: relative; }
-  .bar-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; display: flex; align-items: center; padding-left: 8px; font-size: 11px; font-weight: 600; }
-  .bar-value { font-size: 12px; color: var(--text2); width: 50px; text-align: right; font-family: monospace; }
-
-  @media (max-width: 800px) {
-    .main { grid-template-columns: 1fr; }
-    .sidebar { position: static; max-height: none; }
-    .stats-row { grid-template-columns: repeat(2, 1fr); }
+  footer a { color: var(--accent); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+  @media (max-width: 768px) {
+    .container { padding: 10px; }
+    th, td { padding: 8px; font-size: 0.8rem; }
+    .market-title { max-width: 200px; }
+    .hide-mobile { display: none; }
+    header h1 { font-size: 1.4rem; }
   }
 </style>
 </head>
 <body>
+<div class="container">
+  <header>
+    <h1>📊 <span>Kalshi</span> Markets Dashboard</h1>
+    <p>All available prediction markets · Updated every hour</p>
+    <p id="lastUpdated" style="margin-top: 4px; font-size: 0.8rem;"></p>
+  </header>
 
-<div class="progress-bar" id="progressBar"><div class="progress-fill" id="progressFill"></div></div>
-
-<div class="header">
-  <h1>📊 <span>Kalshi</span> Markets Dashboard</h1>
-  <div class="header-right">
-    <span><span class="live-dot"></span> Live Data</span>
-    <span id="lastUpdate">Loading...</span>
-    <button class="refresh-btn" onclick="forceRefresh()">↻ Refresh</button>
-  </div>
-</div>
-
-<div class="stats-row" id="statsRow">
-  <div class="stat-card"><div class="label">Total Events</div><div class="value" id="statEvents">—</div><div class="sub">Open events</div></div>
-  <div class="stat-card"><div class="label">Categories</div><div class="value" id="statCats">—</div><div class="sub">Market categories</div></div>
-  <div class="stat-card"><div class="label">Largest Category</div><div class="value" id="statLargest">—</div><div class="sub" id="statLargestSub"></div></div>
-  <div class="stat-card"><div class="label">Ticker Format</div><div class="value" style="font-size:16px;font-family:monospace;color:var(--purple)">Proprietary</div><div class="sub">KX-prefixed, no BBG/Reuters</div></div>
-</div>
-
-<div class="chart-section">
-  <div class="chart-card">
-    <h3>EVENTS BY CATEGORY</h3>
-    <div class="bar-chart" id="barChart"></div>
-  </div>
-</div>
-
-<div class="main">
-  <div class="sidebar">
-    <h3>Categories</h3>
-    <div id="catList"></div>
-  </div>
-
-  <div class="events-panel">
-    <div class="search-bar">
-      <input type="text" id="searchInput" placeholder="Search events by title or ticker..." />
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-value" id="statMarkets">—</div>
+      <div class="stat-label">Active Markets</div>
     </div>
-    <div class="events-header">
-      <h2 id="eventsTitle">All Events</h2>
-      <select class="sort-select" id="sortSelect">
-        <option value="title">Sort: Title A-Z</option>
-        <option value="ticker">Sort: Ticker</option>
-        <option value="category">Sort: Category</option>
-      </select>
+    <div class="stat">
+      <div class="stat-value" id="statCategories">—</div>
+      <div class="stat-label">Categories</div>
     </div>
-    <div id="eventsList">
-      <div class="loading"><div class="spinner"></div>Loading events from Kalshi API...</div>
+    <div class="stat">
+      <div class="stat-value" id="statVolume">—</div>
+      <div class="stat-label">24h Volume</div>
     </div>
-    <div class="pagination" id="pagination"></div>
   </div>
+
+  <div class="controls">
+    <input type="text" class="search-box" id="search" placeholder="Search markets..." autocomplete="off">
+    <select class="sort-select" id="sortSelect">
+      <option value="volume">Sort: Volume ↓</option>
+      <option value="price_high">Sort: Price ↓</option>
+      <option value="price_low">Sort: Price ↑</option>
+      <option value="title">Sort: Title A→Z</option>
+      <option value="close_time">Sort: Closing Soon</option>
+    </select>
+  </div>
+
+  <div class="controls" id="categoryFilters" style="gap: 8px; overflow-x: auto;">
+    <button class="filter-btn active" data-cat="all">All</button>
+  </div>
+
+  <div class="market-count" id="marketCount"></div>
+
+  <div id="loadingIndicator" class="loading">
+    <span class="loading-spinner"></span> Loading markets data...
+  </div>
+
+  <table id="marketTable" style="display:none;">
+    <thead>
+      <tr>
+        <th>Market</th>
+        <th>Category</th>
+        <th>Yes Price</th>
+        <th>24h Volume</th>
+        <th class="hide-mobile">Open Interest</th>
+        <th class="hide-mobile">Closes</th>
+      </tr>
+    </thead>
+    <tbody id="marketBody"></tbody>
+  </table>
+
+  <div class="pagination" id="pagination"></div>
 </div>
+
+<footer>
+  <p>Data from <a href="https://kalshi.com" target="_blank">Kalshi</a> public API ·
+     Auto-updated hourly via GitHub Actions ·
+     <a href="https://github.com/researchingdupstack/kalshi-dashboard" target="_blank">View Source</a></p>
+  <p style="margin-top: 4px;">Not financial advice. Kalshi is a CFTC-regulated exchange.</p>
+</footer>
 
 <script>
-const API = 'https://api.elections.kalshi.com/trade-api/v2';
-const PAGE_SIZE = 30;
-
-let allEvents = [];
-let filteredEvents = [];
-let currentCategory = null;
+const PER_PAGE = 100;
+let allMarkets = [];
+let filtered = [];
 let currentPage = 1;
-let marketsCache = {};
+let currentCat = 'all';
+let currentSearch = '';
+let currentSort = 'volume';
+let debounceTimer = null;
 
-const catClassMap = {
-  'Sports': 'cat-sports', 'Elections': 'cat-elections', 'Politics': 'cat-politics',
-  'Economics': 'cat-economics', 'Entertainment': 'cat-entertainment', 'Crypto': 'cat-crypto',
-  'Climate and Weather': 'cat-climate', 'Science and Technology': 'cat-science',
-  'Companies': 'cat-companies', 'Financials': 'cat-financials', 'Mentions': 'cat-mentions',
-  'World': 'cat-world', 'Social': 'cat-social', 'Health': 'cat-health',
-  'Transportation': 'cat-transportation'
-};
+async function init() {
+  try {
+    const resp = await fetch('data.json');
+    const data = await resp.json();
 
-const barColors = [
-  '#58a6ff','#bc8cff','#d29922','#3fb950','#f85149','#ffa657',
-  '#39d3b7','#79c0ff','#dbabff','#56d364','#9198a1','#ff7b72',
-  '#ee9fed','#3fb950','#9198a1'
-];
+    allMarkets = data.markets;
 
-async function apiFetch(path, params = {}) {
-  const url = new URL(API + path);
-  Object.entries(params).forEach(([k,v]) => url.searchParams.set(k, v));
+    document.getElementById('lastUpdated').textContent = 'Last updated: ' + data.generated_at;
+    document.getElementById('statMarkets').textContent = data.total_markets.toLocaleString();
+    document.getElementById('statCategories').textContent = data.categories.length;
 
-  // Try direct first, fall back to CORS proxies if blocked
-  const proxies = [
-    '',  // direct
-    'https://corsproxy.io/?',
-    'https://api.allorigins.win/raw?url=',
-  ];
+    const totalVol = allMarkets.reduce((s, m) => s + m.v, 0);
+    document.getElementById('statVolume').textContent = '$' + Math.round(totalVol).toLocaleString();
 
-  for (const proxy of proxies) {
-    try {
-      const fetchUrl = proxy ? proxy + encodeURIComponent(url.toString()) : url.toString();
-      const resp = await fetch(fetchUrl);
-      if (!resp.ok) continue;
-      return resp.json();
-    } catch (e) {
-      if (proxy === proxies[proxies.length - 1]) throw e;
-      continue;
-    }
+    // Build category buttons
+    const catContainer = document.getElementById('categoryFilters');
+    data.categories.forEach(cat => {
+      const btn = document.createElement('button');
+      btn.className = 'filter-btn';
+      btn.dataset.cat = cat;
+      btn.textContent = cat;
+      catContainer.appendChild(btn);
+    });
+
+    document.getElementById('loadingIndicator').style.display = 'none';
+    document.getElementById('marketTable').style.display = 'table';
+
+    applyFilters();
+  } catch (err) {
+    document.getElementById('loadingIndicator').innerHTML =
+      '❌ Failed to load market data. <br><small>' + err.message + '</small>';
   }
-  throw new Error('All API fetch attempts failed');
-}
-
-function getCatCounts(events) {
-  const counts = {};
-  events.forEach(e => {
-    const cat = e.category || 'Other';
-    counts[cat] = (counts[cat] || 0) + 1;
-  });
-  return Object.entries(counts).sort((a,b) => b[1] - a[1]);
-}
-
-function renderStats(events) {
-  const cats = getCatCounts(events);
-  document.getElementById('statEvents').textContent = events.length.toLocaleString();
-  document.getElementById('statCats').textContent = cats.length;
-  if (cats.length) {
-    document.getElementById('statLargest').textContent = cats[0][0];
-    document.getElementById('statLargestSub').textContent = cats[0][1].toLocaleString() + ' events';
-  }
-  document.getElementById('lastUpdate').textContent = 'Updated: ' + new Date().toLocaleTimeString();
-}
-
-function renderBarChart(events) {
-  const cats = getCatCounts(events);
-  const maxVal = cats[0]?.[1] || 1;
-  const container = document.getElementById('barChart');
-  container.innerHTML = cats.map(([cat, count], i) => `
-    <div class="bar-row">
-      <div class="bar-label">${cat}</div>
-      <div class="bar-track">
-        <div class="bar-fill" style="width: ${(count/maxVal*100).toFixed(1)}%; background: ${barColors[i % barColors.length]};">
-          ${count > maxVal * 0.15 ? count.toLocaleString() : ''}
-        </div>
-      </div>
-      <div class="bar-value">${count.toLocaleString()}</div>
-    </div>
-  `).join('');
-}
-
-function renderCategories(events) {
-  const cats = getCatCounts(events);
-  const total = events.length;
-  const container = document.getElementById('catList');
-  const allItem = `<div class="cat-item ${!currentCategory ? 'active' : ''}" onclick="selectCategory(null)">
-    <span>All</span><span class="cat-count">${total.toLocaleString()}</span>
-  </div>`;
-  container.innerHTML = allItem + cats.map(([cat, count]) => `
-    <div class="cat-item ${currentCategory === cat ? 'active' : ''}" onclick="selectCategory('${cat.replace(/'/g, "\\'")}')">
-      <span>${cat}</span><span class="cat-count">${count.toLocaleString()}</span>
-    </div>
-  `).join('');
-}
-
-function selectCategory(cat) {
-  currentCategory = cat;
-  currentPage = 1;
-  applyFilters();
 }
 
 function applyFilters() {
-  const query = document.getElementById('searchInput').value.toLowerCase().trim();
-  filteredEvents = allEvents.filter(e => {
-    if (currentCategory && e.category !== currentCategory) return false;
-    if (query) {
-      const title = (e.title || '').toLowerCase();
-      const ticker = (e.event_ticker || '').toLowerCase();
-      if (!title.includes(query) && !ticker.includes(query)) return false;
+  filtered = allMarkets.filter(m => {
+    if (currentCat !== 'all' && m.c !== currentCat) return false;
+    if (currentSearch) {
+      const q = currentSearch.toLowerCase();
+      return m.n.toLowerCase().includes(q) ||
+             m.e.toLowerCase().includes(q) ||
+             m.t.toLowerCase().includes(q) ||
+             m.c.toLowerCase().includes(q);
     }
     return true;
   });
 
-  const sort = document.getElementById('sortSelect').value;
-  filteredEvents.sort((a, b) => {
-    if (sort === 'title') return (a.title || '').localeCompare(b.title || '');
-    if (sort === 'ticker') return (a.event_ticker || '').localeCompare(b.event_ticker || '');
-    if (sort === 'category') return (a.category || '').localeCompare(b.category || '');
-    return 0;
+  filtered.sort((a, b) => {
+    switch (currentSort) {
+      case 'volume': return b.v - a.v;
+      case 'price_high': return b.p - a.p;
+      case 'price_low': return a.p - b.p;
+      case 'title': return a.n.localeCompare(b.n);
+      case 'close_time': return a.cs.localeCompare(b.cs);
+      default: return 0;
+    }
   });
 
-  renderCategories(allEvents);
-  renderEventsList();
-  renderPagination();
-
-  const title = currentCategory || 'All';
-  document.getElementById('eventsTitle').textContent = `${title} Events (${filteredEvents.length.toLocaleString()})`;
+  currentPage = 1;
+  render();
 }
 
-function renderEventsList() {
-  const start = (currentPage - 1) * PAGE_SIZE;
-  const page = filteredEvents.slice(start, start + PAGE_SIZE);
-  const container = document.getElementById('eventsList');
+function render() {
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PER_PAGE));
+  if (currentPage > totalPages) currentPage = totalPages;
 
-  if (!page.length) {
-    container.innerHTML = '<div class="loading">No events found</div>';
-    return;
-  }
+  const start = (currentPage - 1) * PER_PAGE;
+  const pageItems = filtered.slice(start, start + PER_PAGE);
 
-  container.innerHTML = page.map(e => {
-    const catClass = catClassMap[e.category] || 'cat-sports';
-    const ticker = e.event_ticker || '';
-    const title = e.title || ticker;
-    const mutually_exclusive = e.mutually_exclusive ? '⚖️ Exclusive' : '';
-    const series = e.series_ticker || '';
-    const sub = e.sub_title || '';
+  document.getElementById('marketCount').textContent =
+    `Showing ${start + 1}–${Math.min(start + PER_PAGE, filtered.length)} of ${filtered.length.toLocaleString()} markets`;
 
-    return `
-      <div class="event-card" id="evt-${ticker}" onclick="toggleEvent('${ticker}')">
-        <div class="event-top">
-          <div class="event-title">${escHtml(title)}</div>
-          <div class="event-category ${catClass}">${e.category || 'Other'}</div>
-        </div>
-        ${sub ? `<div style="font-size:13px;color:var(--text2);margin-top:4px">${escHtml(sub)}</div>` : ''}
-        <div class="event-meta">
-          <span class="event-ticker">${ticker}</span>
-          ${series ? `<span>Series: ${series}</span>` : ''}
-          ${mutually_exclusive ? `<span>${mutually_exclusive}</span>` : ''}
-          ${e.strike_type ? `<span>Type: ${e.strike_type}</span>` : ''}
-        </div>
-        <div class="markets-list" id="markets-${ticker}">
-          <div class="loading" style="padding:16px"><div class="spinner"></div>Loading markets...</div>
-        </div>
-      </div>
+  const tbody = document.getElementById('marketBody');
+  const fragment = document.createDocumentFragment();
+
+  pageItems.forEach(m => {
+    const tr = document.createElement('tr');
+    const pc = m.p >= 70 ? 'price-high' : m.p >= 30 ? 'price-mid' : 'price-low';
+    const vc = m.v > 100 ? 'volume-high' : 'volume';
+    tr.innerHTML = `
+      <td>
+        <div class="market-title">${esc(m.n)}</div>
+        ${m.e ? '<div class="market-event">' + esc(m.e) + '</div>' : ''}
+      </td>
+      <td><span class="category-badge">${esc(m.c)}</span></td>
+      <td class="price ${pc}">${m.p.toFixed(1)}¢</td>
+      <td class="${vc}">${m.v > 0 ? '$' + fmtNum(m.v) : '—'}</td>
+      <td class="hide-mobile volume">${m.oi > 0 ? '$' + fmtNum(m.oi) : '—'}</td>
+      <td class="hide-mobile" style="font-size:0.8rem;color:var(--text-secondary)">${esc(m.ct)}</td>
     `;
-  }).join('');
+    fragment.appendChild(tr);
+  });
+
+  tbody.innerHTML = '';
+  tbody.appendChild(fragment);
+
+  renderPagination(totalPages);
+  window.scrollTo({ top: document.getElementById('marketTable').offsetTop - 80, behavior: 'smooth' });
 }
 
-function escHtml(s) {
-  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-async function toggleEvent(ticker) {
-  const card = document.getElementById('evt-' + ticker);
-  const isExpanded = card.classList.contains('expanded');
-
-  // collapse all
-  document.querySelectorAll('.event-card.expanded').forEach(c => c.classList.remove('expanded'));
-
-  if (isExpanded) return;
-
-  card.classList.add('expanded');
-  const container = document.getElementById('markets-' + ticker);
-
-  if (marketsCache[ticker]) {
-    renderMarkets(ticker, marketsCache[ticker]);
-    return;
-  }
-
-  try {
-    const data = await apiFetch('/markets', { event_ticker: ticker, limit: 100 });
-    const markets = data.markets || [];
-    marketsCache[ticker] = markets;
-    renderMarkets(ticker, markets);
-  } catch (err) {
-    container.innerHTML = `<div style="color:var(--red);padding:8px">Error loading markets: ${err.message}</div>`;
-  }
-}
-
-function renderMarkets(ticker, markets) {
-  const container = document.getElementById('markets-' + ticker);
-  if (!markets.length) {
-    container.innerHTML = '<div style="padding:8px;color:var(--text2)">No individual markets found</div>';
-    return;
-  }
-
-  const header = `<div class="market-row" style="font-size:11px;color:var(--text2);font-weight:600;border-bottom:1px solid var(--border);">
-    <div>Market</div><div>Yes Bid</div><div>No Bid</div><div>Volume</div>
-  </div>`;
-
-  container.innerHTML = header + markets.slice(0, 50).map(m => {
-    const title = m.title || m.ticker;
-    const yes = m.yes_bid_dollars != null ? `$${Number(m.yes_bid_dollars).toFixed(2)}` : '—';
-    const no = m.no_bid_dollars != null ? `$${Number(m.no_bid_dollars).toFixed(2)}` : '—';
-    const vol = m.volume_fp != null ? Number(m.volume_fp).toLocaleString() : '—';
-    return `<div class="market-row">
-      <div class="market-title">${escHtml(title)}<br><span class="event-ticker" style="font-size:10px">${m.ticker}</span></div>
-      <div class="market-yes">${yes}</div>
-      <div class="market-no">${no}</div>
-      <div class="market-vol">${vol}</div>
-    </div>`;
-  }).join('') + (markets.length > 50 ? `<div style="padding:8px;color:var(--text2);font-size:12px">+ ${markets.length - 50} more markets</div>` : '');
-}
-
-function renderPagination() {
-  const totalPages = Math.ceil(filteredEvents.length / PAGE_SIZE);
+function renderPagination(totalPages) {
   const container = document.getElementById('pagination');
-  if (totalPages <= 1) { container.innerHTML = ''; return; }
+  container.innerHTML = '';
+  if (totalPages <= 1) return;
 
-  let btns = [];
-  btns.push(`<button class="page-btn" ${currentPage === 1 ? 'disabled' : ''} onclick="goPage(${currentPage - 1})">← Prev</button>`);
+  const addBtn = (text, page, disabled, active) => {
+    const btn = document.createElement('button');
+    btn.className = 'page-btn' + (active ? ' active' : '');
+    btn.textContent = text;
+    btn.disabled = disabled;
+    if (!disabled && !active) btn.onclick = () => { currentPage = page; render(); };
+    container.appendChild(btn);
+  };
 
-  const range = 3;
-  let start = Math.max(1, currentPage - range);
-  let end = Math.min(totalPages, currentPage + range);
+  addBtn('← Prev', currentPage - 1, currentPage === 1, false);
 
-  if (start > 1) btns.push(`<button class="page-btn" onclick="goPage(1)">1</button>`);
-  if (start > 2) btns.push(`<span style="color:var(--text2);padding:8px">…</span>`);
-
-  for (let i = start; i <= end; i++) {
-    btns.push(`<button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="goPage(${i})">${i}</button>`);
+  // Show page numbers with ellipsis
+  const pages = [];
+  const range = 2;
+  for (let i = 1; i <= totalPages; i++) {
+    if (i === 1 || i === totalPages || (i >= currentPage - range && i <= currentPage + range)) {
+      pages.push(i);
+    } else if (pages[pages.length - 1] !== '...') {
+      pages.push('...');
+    }
   }
 
-  if (end < totalPages - 1) btns.push(`<span style="color:var(--text2);padding:8px">…</span>`);
-  if (end < totalPages) btns.push(`<button class="page-btn" onclick="goPage(${totalPages})">${totalPages}</button>`);
-
-  btns.push(`<button class="page-btn" ${currentPage === totalPages ? 'disabled' : ''} onclick="goPage(${currentPage + 1})">Next →</button>`);
-
-  container.innerHTML = btns.join('');
-}
-
-function goPage(p) {
-  currentPage = p;
-  renderEventsList();
-  renderPagination();
-  window.scrollTo({ top: document.querySelector('.main').offsetTop - 80, behavior: 'smooth' });
-}
-
-const CACHE_KEY = 'kalshi_events_cache';
-const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
-
-function getCachedEvents() {
-  try {
-    const raw = localStorage.getItem(CACHE_KEY);
-    if (!raw) return null;
-    const cached = JSON.parse(raw);
-    if (Date.now() - cached.ts > CACHE_TTL) return null;
-    return cached.events;
-  } catch { return null; }
-}
-
-function setCachedEvents(events) {
-  try {
-    localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), events }));
-  } catch {}
-}
-
-async function loadData() {
-  const bar = document.getElementById('progressBar');
-  const fill = document.getElementById('progressFill');
-
-  // Try cache first for instant load
-  const cached = getCachedEvents();
-  if (cached && cached.length > 0) {
-    allEvents = cached;
-    renderStats(allEvents);
-    renderBarChart(allEvents);
-    applyFilters();
-    document.getElementById('lastUpdate').textContent = 'From cache — click Refresh for live data';
-    return;
-  }
-
-  document.getElementById('eventsList').innerHTML = '<div class="loading"><div class="spinner"></div>Fetching events from Kalshi API...</div>';
-  bar.classList.add('active');
-  fill.style.width = '5%';
-  try {
-    const first = await apiFetch('/events', { limit: 200, status: 'open' });
-    allEvents = first.events || [];
-    fill.style.width = '10%';
-    renderStats(allEvents);
-    renderBarChart(allEvents);
-    applyFilters();
-
-    let cursor = first.cursor;
-    if (cursor && allEvents.length) {
-      streamRemaining(cursor);
+  pages.forEach(p => {
+    if (p === '...') {
+      const span = document.createElement('span');
+      span.className = 'page-info';
+      span.textContent = '...';
+      container.appendChild(span);
     } else {
-      fill.style.width = '100%';
-      setCachedEvents(allEvents);
-      setTimeout(() => bar.classList.remove('active'), 500);
+      addBtn(p, p, false, p === currentPage);
     }
-  } catch (err) {
-    bar.classList.remove('active');
-    document.getElementById('eventsList').innerHTML = `<div class="loading" style="color:var(--red)">Error: ${err.message}<br><br><button class="refresh-btn" onclick="forceRefresh()">Retry</button></div>`;
-  }
+  });
+
+  addBtn('Next →', currentPage + 1, currentPage === totalPages, false);
 }
 
-function forceRefresh() {
-  try { localStorage.removeItem(CACHE_KEY); } catch {}
-  allEvents = [];
-  loadData();
+function esc(s) {
+  const d = document.createElement('div');
+  d.textContent = s || '';
+  return d.innerHTML;
 }
 
-async function streamRemaining(cursor) {
-  const bar = document.getElementById('progressBar');
-  const fill = document.getElementById('progressFill');
-  const estimatedTotal = 4700;
-  let batch = 0;
-  while (cursor) {
-    try {
-      const data = await apiFetch('/events', { limit: 200, status: 'open', cursor });
-      const events = data.events || [];
-      if (!events.length) break;
-      allEvents = allEvents.concat(events);
-      cursor = data.cursor;
-      batch++;
-      const pct = Math.min(95, 10 + (allEvents.length / estimatedTotal) * 85);
-      fill.style.width = pct.toFixed(0) + '%';
-      if (batch % 5 === 0 || !cursor) {
-        renderStats(allEvents);
-        renderBarChart(allEvents);
-        applyFilters();
-      } else {
-        document.getElementById('statEvents').textContent = allEvents.length.toLocaleString() + '...';
-      }
-      if (!cursor) break;
-    } catch (err) {
-      console.error('Background fetch error:', err);
-      break;
-    }
-  }
-  fill.style.width = '100%';
-  renderStats(allEvents);
-  renderBarChart(allEvents);
+function fmtNum(n) {
+  return Math.round(n).toLocaleString();
+}
+
+// Event listeners
+document.getElementById('search').addEventListener('input', e => {
+  currentSearch = e.target.value;
+  clearTimeout(debounceTimer);
+  debounceTimer = setTimeout(applyFilters, 200);
+});
+
+document.getElementById('sortSelect').addEventListener('change', e => {
+  currentSort = e.target.value;
   applyFilters();
-  setCachedEvents(allEvents);
-  setTimeout(() => bar.classList.remove('active'), 500);
-}
+});
 
-// Wire up search + sort
-document.getElementById('searchInput').addEventListener('input', () => { currentPage = 1; applyFilters(); });
-document.getElementById('sortSelect').addEventListener('change', () => applyFilters());
+document.getElementById('categoryFilters').addEventListener('click', e => {
+  if (e.target.classList.contains('filter-btn')) {
+    document.querySelectorAll('#categoryFilters .filter-btn').forEach(b => b.classList.remove('active'));
+    e.target.classList.add('active');
+    currentCat = e.target.dataset.cat;
+    applyFilters();
+  }
+});
 
-// Boot
-loadData();
+init();
 </script>
 </body>
 </html>
