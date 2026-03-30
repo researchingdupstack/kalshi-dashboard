@@ -94,6 +94,19 @@
     cursor: pointer;
     outline: none;
   }
+  .export-btn {
+    padding: 8px 18px;
+    background: var(--green);
+    border: none;
+    border-radius: 6px;
+    color: #000;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: opacity 0.2s;
+    white-space: nowrap;
+  }
+  .export-btn:hover { opacity: 0.85; }
   .market-count {
     color: var(--text-secondary);
     font-size: 0.85rem;
@@ -232,6 +245,7 @@
       <option value="ticker">Sort: Ticker A→Z</option>
       <option value="close_time">Sort: Closing Soon</option>
     </select>
+    <button class="export-btn" id="exportBtn" title="Export current view to CSV">📥 Export CSV</button>
   </div>
 
   <div class="controls" id="categoryFilters" style="gap: 8px; overflow-x: auto;">
@@ -433,6 +447,29 @@ function fmtNum(n) {
   return Math.round(n).toLocaleString();
 }
 
+function exportCSV() {
+  const headers = ['Ticker', 'Title', 'Event', 'Category', 'Yes Price (¢)', '24h Volume ($)', 'Open Interest ($)', 'Closes'];
+  const rows = filtered.map(m => [
+    m.t,
+    '"' + (m.n || '').replace(/"/g, '""') + '"',
+    '"' + (m.e || '').replace(/"/g, '""') + '"',
+    m.c,
+    m.p.toFixed(1),
+    m.v > 0 ? m.v.toFixed(2) : '',
+    m.oi > 0 ? m.oi.toFixed(2) : '',
+    '"' + (m.ct || '').replace(/"/g, '""') + '"'
+  ]);
+
+  const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'kalshi-markets-' + new Date().toISOString().slice(0, 10) + '.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
 // Event listeners
 document.getElementById('search').addEventListener('input', e => {
   currentSearch = e.target.value;
@@ -453,6 +490,8 @@ document.getElementById('categoryFilters').addEventListener('click', e => {
     applyFilters();
   }
 });
+
+document.getElementById('exportBtn').addEventListener('click', exportCSV);
 
 init();
 </script>
